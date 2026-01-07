@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.15)
+project(Rixten)
+
+add_library(Rixten SHARED
+	src/rixten.cpp
+	src/RixtenRoot.cpp
+)
+
+target_compile_definitions(Rixten PRIVATE RIXTEN_EXPORTS)
+
+target_link_libraries(Rixten PRIVATE Lua)
+
+target_include_directories(Rixten PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:include>
+)
+
+add_subdirectory(external/lua-5.5.0)
