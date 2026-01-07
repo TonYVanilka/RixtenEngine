@@ -28,6 +28,7 @@ void RixtenRoot::ShutDown() {
 
 void RixtenRoot::RunEngine() {
 	scriptSystem->DoString("print(0123456789)");
+	scriptSystem->DoFile("main.lua");
 }
 
 int RixtenRoot::GetInt(int a, int b) {

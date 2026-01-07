@@ -12,9 +12,20 @@ public:
     void ShutDown();
 
     int DoString(const char* script);
+    int DoFile(const char* path);
 
-private:
+    template<typename T>
+    T GetArg(int index);
 
-    lua_State* L;
+    template <typename T>
+    void RegisterArg(T value, const char* name);
 
+    template<typename T>
+    void Return(T value);
+
+    int GetArgCount() const;
+
+private :
+
+    lua_State *L;
 };
