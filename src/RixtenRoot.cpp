@@ -1,8 +1,10 @@
 #include "RixtenRoot.h"
 #include <iostream>
+#include <string>
 
-RixtenRoot::RixtenRoot() : scriptSystem(nullptr) {
-	std::cout << "Rixten secsefuly created!" << std::endl;
+#include "scripting/bindings/luaWindow.h"
+
+RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr) {
 }
 
 RixtenRoot::~RixtenRoot() {
@@ -11,26 +13,35 @@ RixtenRoot::~RixtenRoot() {
 }
 
 bool RixtenRoot::Init() {
-	scriptSystem = new ScriptSystem();
 
-	if(!scriptSystem->Init()) return false;
+	// Lua
+    lua.open_libraries(sol::lib::base, sol::lib::math);
+
+    // window
+	window = CreateRixtenWindow(800, 600, "RixtenEngine window");
+	if(!window->Init()) return false;
 
     return true;
 }
 
 void RixtenRoot::ShutDown() {
-	if (scriptSystem) {
-		scriptSystem->ShutDown();
-		delete scriptSystem;
-		scriptSystem = nullptr;
+	if (window) {
+		window->ShutDown();
+		delete window;
+		window = nullptr;
 	}
 }
 
-void RixtenRoot::RunEngine() {
-	scriptSystem->DoString("print(0123456789)");
-	scriptSystem->DoFile("main.lua");
+void RixtenRoot::RegisterBindings() {
+    RegisterWindow(lua, this);
 }
 
-int RixtenRoot::GetInt(int a, int b) {
-	return a + b;
+void RixtenRoot::RunEngine() {
+	std::cout << "=== Rixten Engine run ===" << std::endl;
+
+	RegisterBindings();
+
+    lua.script_file("main.lua");
 }
+
+IWindow* RixtenRoot::GetWindow() {return window;}

@@ -4,16 +4,47 @@ project(Rixten)
 add_library(Rixten SHARED
 	src/rixten.cpp
 	src/RixtenRoot.cpp
-    src/ScriptSystem/ScriptSystem.cpp
+    src/scripting/ScriptSystem.cpp
+	src/platform/OpenGL/Window.cpp
+	src/platform/FWindow.cpp
+	src/scripting/bindings/luaWindow.cpp
 )
-
-add_subdirectory(external/lua-5.5.0)
 
 target_compile_definitions(Rixten PRIVATE RIXTEN_EXPORTS)
 
+# Lua
+add_subdirectory(external/lua-5.4.8)
 target_link_libraries(Rixten PRIVATE Lua)
 
 target_include_directories(Rixten PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:include>
 )
+
+# Sol2
+target_include_directories(Rixten PRIVATE external/sol2/include)
+
+if (WIN32)
+
+# GLFW
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(external/glfw)
+target_link_libraries(Rixten PRIVATE glfw)
+
+#Glad
+add_library(glad STATIC external/glad/src/glad.c)
+target_include_directories(glad PUBLIC external/glad/include)
+
+target_link_libraries(Rixten PRIVATE glad)
+target_include_directories(Rixten PRIVATE external/glad/include)
+
+#OpenGL
+find_package(OpenGL REQUIRED)
+target_link_libraries(Rixten PRIVATE OpenGL::GL)
+
+endif()
