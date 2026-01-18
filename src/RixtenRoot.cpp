@@ -1,25 +1,36 @@
 #include "RixtenRoot.h"
-#include <iostream>
 #include <string>
 
 #include "scripting/bindings/luaWindow.h"
 
-RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr) {
+RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr), assetManager(nullptr) {
 }
 
 RixtenRoot::~RixtenRoot() {
 	ShutDown();
-	std::cout << "Rixten sescefuly destroy!" << std::endl;
+	LOG_INFO("=== Rixten sccsefuly destroy ===");
 }
 
 bool RixtenRoot::Init() {
 
-	// Lua
+	// Logger
+	Logger::GetInstance();
+
+	LOG_INFO("=== Rixten start Init ===");
+
+	// Asset manager
+	assetManager = new AssetManager();
+
+	std::cout << assetManager->GetFile("main.lua") << std::endl;
+
+    // Lua
     lua.open_libraries(sol::lib::base, sol::lib::math);
 
     // window
-	window = CreateRixtenWindow(800, 600, "RixtenEngine window");
-	if(!window->Init()) return false;
+    window = CreateRixtenWindow(800, 600, "RixtenEngine window");
+    if (!window->Init()) return false;
+
+    LOG_INFO("=== Rixten successfully Init ===");
 
     return true;
 }
@@ -36,12 +47,24 @@ void RixtenRoot::RegisterBindings() {
     RegisterWindow(lua, this);
 }
 
+void RixtenRoot::LoadScript() {
+	lua.script_file("main.lua");
+}
+
 void RixtenRoot::RunEngine() {
-	std::cout << "=== Rixten Engine run ===" << std::endl;
+
+	int deltaTime = 0;
 
 	RegisterBindings();
+    LoadScript();
+    lua["on_init"]();
 
-    lua.script_file("main.lua");
+    while (!window->IsOpen()) {
+        lua["on_tick"](deltaTime);
+    }
+
+	ShutDown();
+
 }
 
 IWindow* RixtenRoot::GetWindow() {return window;}

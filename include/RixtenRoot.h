@@ -1,6 +1,8 @@
 #pragma once
 #include <sol/sol.hpp>
 #include "core/Window.h"
+#include "core/AssetManager.h"
+#include "core/LogManager.h"
 
 class RixtenRoot {
 
@@ -12,7 +14,7 @@ public:
 	bool Init();
 	void ShutDown();
 
-	void RegisterBindings();
+	void LoadScript();
 
 	void RunEngine();
 
@@ -20,6 +22,9 @@ public:
 
 private:
 
+	void RegisterBindings();
+
+	AssetManager* assetManager;
 	sol::state lua;
 	IWindow* window;
 

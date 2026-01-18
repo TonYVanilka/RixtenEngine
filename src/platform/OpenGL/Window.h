@@ -12,8 +12,11 @@ public:
     bool Init() override;
     void ShutDown() override;
 
-    bool IsWindow() const override;
+    bool IsOpen() const override;
     void Update() override;
+
+    void SetSize(int width, int height) override;
+    void SetTitle(const char* title_) override;
 
 private:
 
