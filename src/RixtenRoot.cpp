@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include "scripting/bindings/luaWindow.h"
+#include <exception>
 
 RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr) /*assetManager(nullptr)*/ {
 }
@@ -18,11 +19,11 @@ bool RixtenRoot::Init() {
 	//Logger::GetInstance().SetOnlyOneType(TypeMessage::ERROR);
     //Logger::GetInstance().SetLoggerLayer(TypeMessage::ERROR);
  
-    LOG_INFO("=== Rixten start Init ===", "second");
+    LOG_INFO("=== Rixten start Init ===");
 
 	// Asset manager
-	//assetManager = new AssetManager();
-
+	assetManager = new AssetManager();
+	
     // Lua
     lua.open_libraries(sol::lib::base, sol::lib::math);
 

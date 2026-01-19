@@ -10,7 +10,7 @@ add_library(Rixten SHARED
 	src/scripting/bindings/luaWindow.cpp
 	src/AssetSystem/AssetManager.cpp
 	src/LogManager.cpp
-	src/AssetSystem/Shader.cpp
+	src/AssetSystem/TextFile.cpp
 )
 
 # Rixten Settings

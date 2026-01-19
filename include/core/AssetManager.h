@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "IAsset.h"
-#include "Shader.h"
+#include "TextFile.h"
 
 class AssetManager {
 
@@ -15,10 +15,10 @@ public:
     void SeeAllAssets() const;
 
     template<typename T>
-    std::shared_ptr<T> GetAsset(std::string& path);
+    T* GetAsset(std::string path);
+
+    void DellAsset(std::string path);
 
 private:
-
-    std::unordered_map<std::string, std::shared_ptr<IAsset>> cache;
-
+ std::unordered_map<std::string, std::unique_ptr<IAsset>> cache;
 };

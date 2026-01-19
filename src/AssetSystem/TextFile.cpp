@@ -1,12 +1,12 @@
-#include "core/Shader.h"
+#include "core/TextFile.h"
 #include <fstream>
 #include "core/LogManager.h"
 
-Shader::Shader(std::string path_) : path(path_) {
+TextFile::TextFile(std::string path_) : path(path_), data() {
+    LOG_DEBUG("TextFile constructor called for: " + path_);
 }
 
-bool Shader::Load(const char* path_) {
-    path = path_;
+bool TextFile::Load() {
 
     std::ifstream file(path, std::ios::binary);
 
@@ -26,9 +26,13 @@ bool Shader::Load(const char* path_) {
     return true;
 }
 
-const char* Shader::GetData() {
+const char* TextFile::GetData() {
+    if (data.empty()) {
+        LOG_ERROR("Shader data is empty!");
+        return "";
+    }
     return data.c_str();
 }
 
-void Shader::Unload() {
+void TextFile::Unload() {
 }

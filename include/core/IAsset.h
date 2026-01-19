@@ -6,7 +6,7 @@ public:
 
     ~IAsset() = default;
 
-    virtual bool Load(const char* path) = 0;
+    virtual bool Load() = 0;
     virtual void Unload() = 0;
 
 private:

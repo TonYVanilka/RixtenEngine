@@ -11,22 +11,31 @@ AssetManager::~AssetManager() {
 }
 
 void AssetManager::SeeAllAssets() const {
+    if (cache.empty()) {LOG_INFO("No one asset"); return;}
     for (const auto& element : cache) {
-        LOG_DEBUG(element.first);
+        LOG_INFO(element.first);
     }
 }
 
-template<>
-std::shared_ptr<Shader> AssetManager::GetAsset<Shader>(std::string& path) {
-    
+template <>
+TextFile* AssetManager::GetAsset<TextFile>(std::string path) {
     auto it = cache.find(path);
     if (it != cache.end()) {
-        return std::static_pointer_cast<Shader>(it->second);
+        return static_cast<TextFile*>(it->second.get());
     }
+    
+    auto asset = std::make_unique<TextFile>(path);
+    TextFile* raw = asset.get();
 
-    auto shader = std::make_shared<Shader>(path);
+    cache.emplace(path, std::move(asset));
+    return raw;
+}
 
-    cache[path] = shader;
-
-    return std::shared_ptr<Shader>();
+void AssetManager::DellAsset(std::string path) {
+    auto it = cache.find(path);
+    if(it != cache.end()) {
+        cache.erase(path);
+        return;
+    }
+    LOG_ERROR("Asset is not exist");
 }

@@ -8,7 +8,6 @@ extern "C" {
 	}
 
 	RIXTEN_API void DestroyEngine(RixtenEngine  engine) {
-		static_cast<RixtenRoot *>(engine)->ShutDown();
 		delete static_cast<RixtenRoot *>(engine);
 	}
 

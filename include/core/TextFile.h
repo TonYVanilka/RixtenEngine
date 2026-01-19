@@ -2,13 +2,13 @@
 #include "IAsset.h"
 #include <string>
 
-class Shader: public IAsset {
+class TextFile: public IAsset {
 
 public:
 
-    Shader(std::string path_);
+    TextFile(std::string path_);
 
-    bool Load(const char* path_) override;
+    bool Load() override;
     const char* GetData();
     void Unload() override;
 
