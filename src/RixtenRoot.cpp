@@ -1,9 +1,9 @@
 #include "RixtenRoot.h"
 #include <string>
-
+#include <iostream>
 #include "scripting/bindings/luaWindow.h"
 
-RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr), assetManager(nullptr) {
+RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr) /*assetManager(nullptr)*/ {
 }
 
 RixtenRoot::~RixtenRoot() {
@@ -15,13 +15,13 @@ bool RixtenRoot::Init() {
 
 	// Logger
 	Logger::GetInstance();
-
-	LOG_INFO("=== Rixten start Init ===");
+	//Logger::GetInstance().SetOnlyOneType(TypeMessage::ERROR);
+    //Logger::GetInstance().SetLoggerLayer(TypeMessage::ERROR);
+ 
+    LOG_INFO("=== Rixten start Init ===", "second");
 
 	// Asset manager
-	assetManager = new AssetManager();
-
-	std::cout << assetManager->GetFile("main.lua") << std::endl;
+	//assetManager = new AssetManager();
 
     // Lua
     lua.open_libraries(sol::lib::base, sol::lib::math);
@@ -41,6 +41,7 @@ void RixtenRoot::ShutDown() {
 		delete window;
 		window = nullptr;
 	}
+	LOG_INFO("Shut down Rixten");
 }
 
 void RixtenRoot::RegisterBindings() {
@@ -62,8 +63,6 @@ void RixtenRoot::RunEngine() {
     while (!window->IsOpen()) {
         lua["on_tick"](deltaTime);
     }
-
-	ShutDown();
 
 }
 

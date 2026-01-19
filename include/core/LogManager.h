@@ -1,4 +1,5 @@
-#pragma once 
+#pragma once
+#include <iostream>
 
 enum TypeMessage {
     FATAL,
@@ -15,9 +16,17 @@ public:
 
     static Logger& GetInstance();
 
-    void AddLogFile(const char* path);
+    void SetLogFilePath(const char* path);
+    void SetLoggerLayer(TypeMessage type);
 
-    void Log(TypeMessage type, const char* message);
+    template <typename... Args>
+    void Log(TypeMessage type, const char* file, Args&&... args) {
+        if (LogLevel <= type) {
+            std::cout << LogTypeToString(type) << "::" << CutPath(file) << ' ';
+            ((std::cout << std::forward<Args>(args)), ...);
+            std::cout << std::endl;
+        }
+    }
 
 private:
 
@@ -25,9 +34,11 @@ private:
     ~Logger();
 
     const char* LogTypeToString(TypeMessage type);
+    const char* CutPath(const char* fullPath);
 
-    bool IsLoggingFile = false;
+    bool IsLoggingFile;
     const char* LogFilePath;
+    TypeMessage LogLevel = TypeMessage::FATAL;
 
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
@@ -41,9 +52,9 @@ private:
     #define LOG_ERROR(...) ((void)0)
     #define LOG_FATAL(...) ((void)0)
 #else
-    #define LOG_DEBUG(...) Logger::GetInstance().Log(TypeMessage::DEBUG, __VA_ARGS__)
-    #define LOG_INFO(...) Logger::GetInstance().Log(TypeMessage::INFO, __VA_ARGS__)
-    #define LOG_WARN(...) Logger::GetInstance().Log(TypeMessage::WARN, __VA_ARGS__)
-    #define LOG_ERROR(...) Logger::GetInstance().Log(TypeMessage::ERROR, __VA_ARGS__)
-    #define LOG_FATAL(...) Logger::GetInstance().Log(TypeMessage::FATAL, __VA_ARGS__)
+    #define LOG_DEBUG(...) Logger::GetInstance().Log(TypeMessage::DEBUG, __FILE__, __VA_ARGS__)
+    #define LOG_INFO(...) Logger::GetInstance().Log(TypeMessage::INFO, __FILE__, __VA_ARGS__)
+    #define LOG_WARN(...) Logger::GetInstance().Log(TypeMessage::WARN, __FILE__, __VA_ARGS__)
+    #define LOG_ERROR(...) Logger::GetInstance().Log(TypeMessage::ERROR, __FILE__, __VA_ARGS__)
+    #define LOG_FATAL(...) Logger::GetInstance().Log(TypeMessage::FATAL, __FILE__, __VA_ARGS__)
 #endif  // DISABLE_LOGGING

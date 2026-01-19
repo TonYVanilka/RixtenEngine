@@ -8,8 +8,9 @@ add_library(Rixten SHARED
 	src/platform/OpenGL/Window.cpp
 	src/platform/FWindow.cpp
 	src/scripting/bindings/luaWindow.cpp
-	src/AssetManager.cpp
+	src/AssetSystem/AssetManager.cpp
 	src/LogManager.cpp
+	src/AssetSystem/Shader.cpp
 )
 
 # Rixten Settings

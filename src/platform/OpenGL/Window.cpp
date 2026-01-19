@@ -1,5 +1,5 @@
 #include "Window.h"
-#include <iostream>
+#include "core/LogManager.h"
 
 Window::Window(int width_, int height_, const char* title_) : width(width_), height(height_), title(title_), handle(nullptr) {
 }
@@ -20,7 +20,7 @@ bool Window::Init() {
     handle = glfwCreateWindow(width, height, title, NULL, NULL);
 
     if(handle == nullptr) {
-        std::cout << "failed to init opengl window" << std::endl;
+        LOG_ERROR("Failed to init opengl window");
         return false;
         ShutDown();
     }
@@ -28,7 +28,7 @@ bool Window::Init() {
     glfwMakeContextCurrent(handle);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        LOG_ERROR("Failed to initialize GLAD");
         return false;
         Window::ShutDown();
     }
@@ -38,6 +38,7 @@ bool Window::Init() {
 
 void Window::ShutDown() {
     glfwTerminate();
+    LOG_INFO("Shut down window");
 }
 
 bool Window::IsOpen() const {

@@ -1,31 +1,27 @@
 #include "core/LogManager.h"
-#include <iostream>
 
-Logger& Logger::GetInstance() {
-    static Logger instance;
-    return instance;
-}
-
-void Logger::AddLogFile(const char* path) {
-    LogFilePath = path;
-    IsLoggingFile = true;
-}
-
-void Logger::Log(TypeMessage type, const char* message) {
-    
-    std::cout << LogTypeToString(type) << ": " << message << std::endl;
-}
-
-Logger::Logger() {
+Logger::Logger() : IsLoggingFile(false) {
 #ifdef DISABLE_LOGGING
     std::cout << "Logger disable" << std::endl;
-#else 
+#else
     std::cout << "Logger init" << std::endl;
 #endif
 }
 
 Logger::~Logger() {
 }
+
+Logger& Logger::GetInstance() {
+    static Logger instance;
+    return instance;
+}
+
+void Logger::SetLogFilePath(const char* path) {
+    LogFilePath = path;
+    IsLoggingFile = true;
+}
+
+void Logger::SetLoggerLayer(TypeMessage type) {LogLevel = type;}
 
 const char* Logger::LogTypeToString(TypeMessage type) {
     switch (type) {
@@ -44,4 +40,12 @@ const char* Logger::LogTypeToString(TypeMessage type) {
         default:
             return "UNKNOWN";
     }
+}
+
+const char* Logger::CutPath(const char* fullPath) {
+    const char* lastSlash = strrchr(fullPath, '/');
+    const char* lastBackslash = strrchr(fullPath, '\\');
+    const char* lastSeparator = (lastSlash > lastBackslash) ? lastSlash : lastBackslash;
+
+    return lastSeparator ? lastSeparator + 1 : fullPath;
 }
