@@ -1,20 +1,27 @@
 cmake_minimum_required(VERSION 3.15)
 project(Rixten)
 
+set(CPPOpenGL  
+	src/platform/OpenGL/Window.cpp
+	src/platform/FWindow.cpp
+)
+
 add_library(Rixten SHARED
 	src/rixten.cpp
 	src/RixtenRoot.cpp
-    src/scripting/ScriptSystem.cpp
-	src/platform/OpenGL/Window.cpp
-	src/platform/FWindow.cpp
+	src/scripting/ScriptSystem.cpp
 	src/scripting/bindings/luaWindow.cpp
 	src/AssetSystem/AssetManager.cpp
 	src/LogManager.cpp
 	src/AssetSystem/TextFile.cpp
+	src/AssetSystem/FileReader.cpp
+	${CPPOpenGL}
+
 )
 
 # Rixten Settings
 target_compile_definitions(Rixten PRIVATE RIXTEN_EXPORTS)
+target_compile_definitions(Rixten PRIVATE RIXTEN_USE_OPENGL)
 #target_compile_definitions(Rixten PRIVATE DISABLE_LOGGING)
  
 # Lua

@@ -19,6 +19,8 @@ public:
 
     void DellAsset(std::string path);
 
+    void ShutDown();
+
 private:
- std::unordered_map<std::string, std::unique_ptr<IAsset>> cache;
+    std::unordered_map<std::string, std::unique_ptr<IAsset>> cache;
 };

@@ -4,7 +4,7 @@
 #include "scripting/bindings/luaWindow.h"
 #include <exception>
 
-RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr) /*assetManager(nullptr)*/ {
+RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr), assetManager(nullptr) {
 }
 
 RixtenRoot::~RixtenRoot() {
@@ -23,7 +23,10 @@ bool RixtenRoot::Init() {
 
 	// Asset manager
 	assetManager = new AssetManager();
-	
+	// TextFile* luaMain = assetManager->GetAsset<TextFile>("main.lua");
+	// luaMain->Load();
+	// LOG_DEBUG(luaMain->GetData());
+
     // Lua
     lua.open_libraries(sol::lib::base, sol::lib::math);
 
@@ -42,6 +45,11 @@ void RixtenRoot::ShutDown() {
 		delete window;
 		window = nullptr;
 	}
+	if (assetManager) {
+		assetManager->ShutDown();
+		delete assetManager;
+		assetManager = nullptr;
+	} 
 	LOG_INFO("Shut down Rixten");
 }
 

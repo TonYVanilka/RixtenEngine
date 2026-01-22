@@ -1,4 +1,4 @@
-#include "core/AssetManager.h"
+#include "core/AssetSystem/AssetManager.h"
 #include <fstream> 
 #include <string>
 #include <iostream>
@@ -38,4 +38,8 @@ void AssetManager::DellAsset(std::string path) {
         return;
     }
     LOG_ERROR("Asset is not exist");
+}
+void AssetManager::ShutDown() {
+    if (cache.empty()) return;
+    cache.clear();
 }

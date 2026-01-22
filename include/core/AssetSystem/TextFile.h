@@ -7,9 +7,10 @@ class TextFile: public IAsset {
 public:
 
     TextFile(std::string path_);
+    ~TextFile();
 
     bool Load() override;
-    const char* GetData();
+    const char* GetData() const;
     void Unload() override;
 
 private:    
