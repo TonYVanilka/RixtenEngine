@@ -31,6 +31,20 @@ TextFile* AssetManager::GetAsset<TextFile>(std::string path) {
     return raw;
 }
 
+template <>
+Mesh* AssetManager::GetAsset<Mesh>(std::string path) {
+    auto it = cache.find(path);
+    if (it != cache.end()) {
+        return static_cast<Mesh*>(it->second.get());
+    }
+
+    auto asset = std::make_unique<Mesh>(path);
+    Mesh* raw = asset.get();
+
+    cache.emplace(path, std::move(asset));
+    return raw;
+}
+
 void AssetManager::DellAsset(std::string path) {
     auto it = cache.find(path);
     if(it != cache.end()) {

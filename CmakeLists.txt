@@ -14,6 +14,7 @@ add_library(Rixten SHARED
 	src/AssetSystem/AssetManager.cpp
 	src/LogManager.cpp
 	src/AssetSystem/TextFile.cpp
+	src/AssetSystem/Mesh.cpp
 	src/AssetSystem/FileReader.cpp
 	${CPPOpenGL}
 

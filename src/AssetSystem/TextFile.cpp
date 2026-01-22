@@ -29,5 +29,6 @@ const char* TextFile::GetData() const {
 }
 
 void TextFile::Unload() {
+    path.clear();
     data.clear();
 }

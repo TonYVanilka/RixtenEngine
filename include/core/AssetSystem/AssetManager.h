@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "IAsset.h"
 #include "TextFile.h"
+#include "Mesh.h"
 
 class AssetManager {
 

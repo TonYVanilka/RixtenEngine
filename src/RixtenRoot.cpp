@@ -4,6 +4,15 @@
 #include "scripting/bindings/luaWindow.h"
 #include <exception>
 
+std::vector<Vertex> vertices =
+    {
+        // position              normal              textureCords
+        {{-0.5f, -0.5f, 0.0f}, {0.5f, 0.0f, 0.0f}, {0.5f, 0.0f}},
+        {{0.5f, -0.5f, 0.0f}, {0.5f, 0.0f, 0.0f}, {0.5f, 0.0f}},
+        {{0.0f, 0.5f, 0.0f}, {0.5f, 0.0f, 0.0f}, {0.5f, 0.0f}}};
+
+std::vector<uint32_t> indices = {0, 1, 2};
+
 RixtenRoot::RixtenRoot() : window(nullptr), lua(nullptr), assetManager(nullptr) {
 }
 
@@ -26,6 +35,12 @@ bool RixtenRoot::Init() {
 	// TextFile* luaMain = assetManager->GetAsset<TextFile>("main.lua");
 	// luaMain->Load();
 	// LOG_DEBUG(luaMain->GetData());
+	Mesh* triangle = assetManager->GetAsset<Mesh>("main.lua");
+	triangle->LoadD(vertices, indices);
+	// std::vector<Vertex> vr = triangle->GetVertices();
+	// for (int i = 0; i < vr.size(); i++) {
+	// 	LOG_DEBUG(*vr[i].position);
+	// }
 
     // Lua
     lua.open_libraries(sol::lib::base, sol::lib::math);
