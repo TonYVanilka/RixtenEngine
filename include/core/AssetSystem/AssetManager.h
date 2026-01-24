@@ -1,10 +1,14 @@
 #pragma once
+
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
+
 #include "IAsset.h"
-#include "TextFile.h"
 #include "Mesh.h"
+#include "core/AssetSystem/ShaderProgram.h"
+#include "TextFile.h"
 
 class AssetManager {
 
@@ -15,10 +19,21 @@ public:
 
     void SeeAllAssets() const;
 
-    template<typename T>
-    T* GetAsset(std::string path);
+    template <typename T>
+    T* GetAsset(const std::string& path) {
+        static_assert(std::is_base_of_v<IAsset, T>, "T must must be child of IAssets");
+        auto it = cache.find(path);
+        if (it != cache.end()) {
+            return static_cast<T*>(it->second.get());
+        }
 
-    void DellAsset(std::string path);
+        auto asset = std::make_unique<T>(path);
+        T* raw = asset.get();
+        cache[path] = std::move(asset);
+        return raw;
+    }
+
+    void DellAsset(const char* path);
 
     void ShutDown();
 

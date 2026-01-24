@@ -3,6 +3,8 @@
 #include "core/Window.h"
 #include "core/AssetSystem/AssetManager.h"
 #include "core/LogManager.h"
+#include "core/Graphic/Renderer.h"
+#include "core/Graphic/RenderState.h"
 
 class RixtenRoot {
 
@@ -23,6 +25,9 @@ public:
 private:
 
 	void RegisterBindings();
+
+	RenderState* renderState;
+	RendererGLFW* renderer;
 
 	AssetManager* assetManager;
 	sol::state lua;

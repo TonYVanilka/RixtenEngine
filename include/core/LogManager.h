@@ -28,6 +28,8 @@ public:
         }
     }
 
+    int DEBUG() {return dep += 1;};
+
 private:
 
     Logger();
@@ -43,6 +45,7 @@ private:
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
 
+    int dep = 0;
 };
 
 #ifdef DISABLE_LOGGING

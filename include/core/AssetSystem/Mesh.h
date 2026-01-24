@@ -2,7 +2,8 @@
 #include "IAsset.h"
 #include <string>
 #include <vector>
-#include "Vertex.h"
+#include "core/Graphic/Vertex.h"
+#include <glad/glad.h>
 
 class Mesh : public IAsset {
 
@@ -12,19 +13,25 @@ public:
     ~Mesh();
 
     bool Load() override;
-    bool LoadD(std::vector<Vertex>& vertices_, std::vector<uint32_t> indices_);
+    bool LoadD(std::vector<Vertex>& vertices_, std::vector<uint32_t>& indices_);
+
+    void BindVAO();
 
     std::vector<Vertex>& GetVertices();
-    std::vector<uint32_t>& GetIndces();
-    uint32_t GetIndcesCount() const;
+    std::vector<uint32_t>& GetIndices();
+    uint32_t GetIndicesCount() const;
     void Unload() override;
 
 private:
 
     std::string path;
     std::vector<Vertex> vertices;
-    std::vector<uint32_t> indces;
+    std::vector<uint32_t> indices;
 
-    uint32_t indcesCount;
+    GLuint VAO;
+    GLuint VBO;
+    GLuint EBO;
 
+    bool UseIndices;
+    uint32_t indicesCount;
 };

@@ -1,8 +1,10 @@
 #pragma once
 
 class IWindow {
-   public:
-    ~IWindow() = default;
+
+public:
+
+    virtual ~IWindow() = default;
 
     virtual bool Init() = 0;
     virtual void ShutDown() = 0;

@@ -14,7 +14,6 @@ bool TextFile::Load() {
 
     if (!FileSystem::ReadFileBinary(path, raw)) return false;
 
-    LOG_DEBUG(raw.size());
     data.assign(reinterpret_cast<const char*>(raw.data()), raw.size());
     
     return true;
