@@ -3,7 +3,7 @@
 #include "core/AssetSystem/ShaderProgram.h"
 #include "core/AssetSystem/VAO.h"
 #include "core/Graphic/IRenderer.h"
-#include "RenderState.h"
+#include "RenderStats.h"
 
 struct RenderCommand {
     uint64_t sortKey;
@@ -17,13 +17,13 @@ public:
     RendererGLFW();
     ~RendererGLFW();
 
-    bool Init(AssetManager* assetManager_, RenderState* renderState_);
+    bool Init(AssetManager* assetManager_, RenderStats* stats_);
 
-    void SwapRenderState(RenderState* renderState_);
+    void SwapRenderState(RenderStats* stats_);
 
     void ShutDown();
 
-    void AddToRender(const RenderCommand& command);
+    void Submit(const RenderCommand& command);
     void ClearRender();
 
     void Render();
@@ -53,11 +53,11 @@ private:
         std::vector<RenderCommand> m_renderQueue;
     };
 
-    void goRenderQueue();
-    void goRenderCommand(RenderCommand& cmd);
+    void renderQueue();
+    void doRenderCommand(RenderCommand& cmd);
 
-    RenderState* renderState;
-    RenderQueue renderQueue;
+    RenderStats* m_Stats;
+    RenderQueue m_Queue;
     AssetManager* assetManager;
 
 };

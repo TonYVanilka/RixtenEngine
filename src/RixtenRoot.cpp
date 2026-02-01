@@ -63,11 +63,11 @@ bool RixtenRoot::Init() {
     Mesh* triangle = assetManager->GetAsset<Mesh>("main.lua");
     triangle->LoadD(vertices, indices);
 
-    renderState = new RenderState();
-    renderState->SetShaderProgram(shaderProg);
+    renderState = new RenderStats();
+    renderState->BindShaderProgram(shaderProg);
 	renderer = new RendererGLFW();
     renderer->Init(assetManager, renderState);
-    renderer->AddToRender({1, triangle});
+    renderer->Submit({1, triangle});
 
     LOG_INFO("=== Rixten successfully Init ===");
 

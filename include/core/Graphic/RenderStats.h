@@ -2,16 +2,17 @@
 #include <cstdint>
 
 #include "core/AssetSystem/ShaderProgram.h"
-#include "core/Graphic/IRenderState.h"
+#include "core/Graphic/IRenderStats.h"
 
-class RenderState {
+class RenderStats {
 
 public: 
 
-    RenderState();
+    RenderStats();
+    ~RenderStats();
 
-    void SetShaderProgram(ShaderProgram* currentSP_);
-    void SetVAO(VAO* currentVAO_);
+    void BindShaderProgram(ShaderProgram* currentSP_);
+    void BindVAO(VAO* currentVAO_);
 
     void Reset();
 
@@ -23,7 +24,7 @@ public:
 
     uint32_t curentTexturesSlots[16];
 
-   private: 
+private: 
 
     ShaderProgram* currentShaderProgram;
     VAO* currentVAO;

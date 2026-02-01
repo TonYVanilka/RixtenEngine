@@ -4,32 +4,32 @@
 #include <glfw/glfw3.h>
 #include "core/LogManager.h"
 
-RendererGLFW::RendererGLFW() : assetManager(nullptr), renderState(nullptr) {
+RendererGLFW::RendererGLFW() : assetManager(nullptr), m_Stats(nullptr) {
 }
 
 RendererGLFW::~RendererGLFW() {
     ShutDown();
 }
 
-bool RendererGLFW::Init(AssetManager* assetManager_, RenderState* renderState_) {
+bool RendererGLFW::Init(AssetManager* assetManager_, RenderStats* stats_) {
     assetManager = assetManager_;
-    renderState = renderState_;
+    m_Stats = stats_;
     return true;
 }
 
-void RendererGLFW::SwapRenderState(RenderState* renderState_) {
-    renderState = renderState_;
+void RendererGLFW::SwapRenderState(RenderStats* stats_) {
+    m_Stats = stats_;
 }
 
 void RendererGLFW::ShutDown() {
 }
 
-void RendererGLFW::AddToRender(const RenderCommand& command) {
-    renderQueue.add(command);
+void RendererGLFW::Submit(const RenderCommand& command) {
+    m_Queue.add(command);
 }
 
 void RendererGLFW::ClearRender() {
-    renderQueue.clear();
+    m_Queue.clear();
 }
 
 void RendererGLFW::Render() {
@@ -43,27 +43,25 @@ void RendererGLFW::frameBegin() {
 }
 
 void RendererGLFW::frameEnd() {
-    
-    goRenderQueue();
-
+    renderQueue();
 }
 
-void RendererGLFW::goRenderQueue() {
-    for (RenderCommand& cmd : renderQueue) {
-        goRenderCommand(cmd);
+void RendererGLFW::renderQueue() {
+    for (RenderCommand& cmd : m_Queue) {
+        doRenderCommand(cmd);
     }
 }
 
-void RendererGLFW::goRenderCommand(RenderCommand& cmd) {
+void RendererGLFW::doRenderCommand(RenderCommand& cmd) {
     // renderQueue.sort();
 
-    renderState->GetShaderProgram()->Use();
+    m_Stats->GetShaderProgram()->Use();
 
     cmd.mesh->BindVAO();
     glDrawElements(GL_TRIANGLES, cmd.mesh->GetIndicesCount(), GL_UNSIGNED_INT, 0);
     
-    renderState->countDrawCalls++;
-    renderState->countTriangels += cmd.mesh->GetIndicesCount() / 3;
+    m_Stats->countDrawCalls++;
+    m_Stats->countTriangels += cmd.mesh->GetIndicesCount() / 3;
 }
 
 // Render queue

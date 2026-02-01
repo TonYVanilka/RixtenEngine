@@ -33,6 +33,8 @@ public:
         return raw;
     }
 
+    IAsset& newAsset();
+
     void DellAsset(const char* path);
 
     void ShutDown();

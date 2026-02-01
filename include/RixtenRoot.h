@@ -4,7 +4,7 @@
 #include "core/AssetSystem/AssetManager.h"
 #include "core/LogManager.h"
 #include "core/Graphic/Renderer.h"
-#include "core/Graphic/RenderState.h"
+#include "core/Graphic/RenderStats.h"
 
 class RixtenRoot {
 
@@ -26,7 +26,7 @@ private:
 
 	void RegisterBindings();
 
-	RenderState* renderState;
+	RenderStats* renderState;
 	RendererGLFW* renderer;
 
 	AssetManager* assetManager;

@@ -22,7 +22,7 @@ public:
     template <typename... Args>
     void Log(TypeMessage type, const char* file, Args&&... args) {
         if (LogLevel <= type) {
-            std::cout << LogTypeToString(type) << "::" << CutPath(file) << ' ';
+            std::cout << '[' <<LogTypeToString(type) << "] [" << CutPath(file) << "] ";
             ((std::cout << std::forward<Args>(args)), ...);
             std::cout << std::endl;
         }
