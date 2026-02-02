@@ -26,13 +26,15 @@ RixtenRoot::~RixtenRoot() {
 
 bool RixtenRoot::Init() {
 
-    static LoggerState logger;
-    logger.logLevel = LogLevel::DEBUG;
+    // Logger
+    //logger.logLevel = LogLevel::DEBUG;
+    //Logger::g_logState.logLevel = LogLevel::INFO;
+    Logger::Init(Logger::g_LogOutput, "RIXTEN_LOG.txt");
 
-    Logger::Init(logger, "engine.log");
-
-    g_logger = &logger;
-
+    //LOG_FATAL("fatal");
+    //LOG_ERROR("error");
+    LOG_WARN("warn");
+    LOG_INFO("info");
     LOG_DEBUG("HELLO FROM DOD LOGGER");
 
     // Logger
@@ -41,7 +43,6 @@ bool RixtenRoot::Init() {
     //Logger::GetInstance().SetLoggerLayer(TypeMessage::ERROR);
  
     LOG_INFO("=== Rixten start Init ===");
-
     // Asset manager
     assetManager = new AssetManager();
     // TextFile* luaMain = assetManager->GetAsset<TextFile>("main.lua");
@@ -95,8 +96,10 @@ void RixtenRoot::ShutDown() {
 		delete assetManager;
 		assetManager = nullptr;
 	} 
+
 	LOG_INFO("Shut down Rixten");
-    Logger::ShutDown(*g_logger);
+
+    Logger::ShutDown(Logger::g_LogOutput);
 }
 
 void RixtenRoot::RegisterBindings() {
@@ -118,6 +121,8 @@ void RixtenRoot::RunEngine() {
     while (!window->IsOpen()) {
         lua["on_tick"](deltaTime);
         renderer->Render();
+        
+        //Logger::WriteAll();
     }
 
 }
