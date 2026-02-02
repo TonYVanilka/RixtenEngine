@@ -2,7 +2,6 @@
 #include <sol/sol.hpp>
 #include "core/Window.h"
 #include "core/AssetSystem/AssetManager.h"
-#include "core/LogManager.h"
 #include "core/Graphic/Renderer.h"
 #include "core/Graphic/RenderStats.h"
 

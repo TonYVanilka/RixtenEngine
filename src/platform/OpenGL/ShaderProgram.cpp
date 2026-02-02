@@ -1,5 +1,5 @@
 #include "core/AssetSystem/ShaderProgram.h"
-#include "core/LogManager.h"
+#include "utils/Logger.h"
 
 ShaderProgram::ShaderProgram(std::string path) : 
     shaderProgramID(0) {

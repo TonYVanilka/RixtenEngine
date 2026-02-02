@@ -1,6 +1,6 @@
 #include "core/AssetSystem/FileReader.h"
 #include <fstream>
-#include "core/LogManager.h"
+#include "utils/Logger.h"
 
 bool FileSystem::ReadFileBinary(const std::string& path, std::vector<std::byte>& outData) {
     

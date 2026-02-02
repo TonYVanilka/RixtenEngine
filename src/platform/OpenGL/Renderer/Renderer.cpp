@@ -1,8 +1,11 @@
 #include "core/Graphic/Renderer.h"
-#include <algorithm>
+
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
-#include "core/LogManager.h"
+
+#include <algorithm>
+
+#include "utils/Logger.h"
 
 RendererGLFW::RendererGLFW() : assetManager(nullptr), m_Stats(nullptr) {
 }

@@ -4,6 +4,7 @@
 #include "scripting/bindings/luaWindow.h"
 #include <exception>
 #include "core/Graphic/Vertex.h"
+#include "utils/Logger.h"
 
 std::vector<Vertex> vertices =
     {
@@ -25,9 +26,18 @@ RixtenRoot::~RixtenRoot() {
 
 bool RixtenRoot::Init() {
 
-	// Logger
-	Logger::GetInstance();
-	//Logger::GetInstance().SetOnlyOneType(TypeMessage::ERROR);
+    static LoggerState logger;
+    logger.logLevel = LogLevel::DEBUG;
+
+    Logger::Init(logger, "engine.log");
+
+    g_logger = &logger;
+
+    LOG_DEBUG("HELLO FROM DOD LOGGER");
+
+    // Logger
+    //Logger::GetInstance();
+    // Logger::GetInstance().SetOnlyOneType(TypeMessage::ERROR);
     //Logger::GetInstance().SetLoggerLayer(TypeMessage::ERROR);
  
     LOG_INFO("=== Rixten start Init ===");
@@ -86,6 +96,7 @@ void RixtenRoot::ShutDown() {
 		assetManager = nullptr;
 	} 
 	LOG_INFO("Shut down Rixten");
+    Logger::ShutDown(*g_logger);
 }
 
 void RixtenRoot::RegisterBindings() {

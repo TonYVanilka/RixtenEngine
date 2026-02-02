@@ -16,10 +16,10 @@ add_library(Rixten SHARED
 	src/scripting/ScriptSystem.cpp
 	src/scripting/bindings/luaWindow.cpp
 	src/AssetSystem/AssetManager.cpp
-	src/LogManager.cpp
 	src/AssetSystem/TextFile.cpp
 	src/AssetSystem/Mesh.cpp
 	src/AssetSystem/FileReader.cpp
+	src/utils/Logger.cpp
 	${CPPOpenGL}
 
 )
@@ -28,14 +28,17 @@ add_library(Rixten SHARED
 target_compile_definitions(Rixten PRIVATE RIXTEN_EXPORTS)
 target_compile_definitions(Rixten PRIVATE RIXTEN_USE_OPENGL)
 #target_compile_definitions(Rixten PRIVATE DISABLE_LOGGING)
- 
+
 # Lua
 add_subdirectory(external/lua-5.4.8)
 target_link_libraries(Rixten PRIVATE Lua)
 
-target_include_directories(Rixten PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	$<INSTALL_INTERFACE:include>
+target_include_directories(Rixten 
+	PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>
+	PRIVATE 
+		${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 # Sol2

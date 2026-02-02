@@ -1,6 +1,6 @@
 #include "core/AssetSystem/TextFile.h"
 #include "core/AssetSystem/FileReader.h"
-#include "core/LogManager.h"
+#include "utils/Logger.h"
 
 TextFile::TextFile(std::string path_) : path(path_), data("") {
 }

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "core/LogManager.h"
+#include "utils/Logger.h"
 
 AssetManager::AssetManager() {
 }

@@ -1,5 +1,5 @@
 #include "Window.h"
-#include "core/LogManager.h"
+#include "utils/Logger.h"
 
 Window::Window(int width_, int height_, const char* title_) : width(width_), height(height_), title(title_), handle(nullptr) {
 }
