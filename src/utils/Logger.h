@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <chrono>
 
 enum LogLevel : uint8_t {
     FATAL,
@@ -22,6 +23,8 @@ struct LoggerBatch {
 
     LogLevel levels[BatchSize];
     const char* files[BatchSize];
+    uint8_t date[BatchSize * 3];
+    uint8_t datePos = 3;
     std::string messages[BatchSize];
     uint32_t count = 0;
 };
@@ -81,30 +84,44 @@ namespace Logger {
 
         if (lvl > state.logLevel) return;
 
+        auto now = std::chrono::system_clock::now();
+        std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+        std::tm* local_time = std::localtime(&now_time);
+
         std::ostringstream message;
         ((message << std::forward<Args>(args)), ...);
 
         uint32_t idx = batch.count;
+        uint8_t dP = batch.datePos;
         batch.levels[idx] = lvl;
         batch.files[idx] = file;
         batch.messages[idx] = message.str();
+
+        batch.date[idx * 3] = local_time->tm_hour;
+        batch.date[idx * 3 + 1] = local_time->tm_min;
+        batch.date[idx * 3 + 2] = local_time->tm_sec;
+
+        //batch.datePos += 3;
         batch.count++;
 
+        // auto log errors 
         if (lvl <= LogLevel::ERROR) {
             Logger::WriteAll();
         }
-
+        // auto log overflowing
         if (batch.count >= LoggerBatch::BatchSize) {
             LogWrite(batch, g_LogOutput);
         }
     }
 
     inline void LogWrite(LoggerBatch& batch, LoggerOutput& output) {
+        uint8_t dP = batch.datePos;
         for (uint32_t i = 0; i < batch.count; ++i) {
             int written = std::snprintf(
                 output.buffer + output.bufferPos,
                 sizeof(output.buffer) - output.bufferPos,
-                "[%s][%s] %s\n",
+                "[%i:%i:%i][%s][%s] %s\n",
+                batch.date[i*3], batch.date[i*3 +1], batch.date[i*3 + 2],
                 Logger::LogTypeToString(batch.levels[i]),
                 Logger::CutPath(batch.files[i]),
                 batch.messages[i].c_str());

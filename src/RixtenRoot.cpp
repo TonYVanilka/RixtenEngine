@@ -1,9 +1,11 @@
 #include "RixtenRoot.h"
-#include <string>
-#include <iostream>
-#include "scripting/bindings/luaWindow.h"
+
 #include <exception>
+#include <iostream>
+#include <string>
+
 #include "core/Graphic/Vertex.h"
+#include "scripting/bindings/luaWindow.h"
 #include "utils/Logger.h"
 
 std::vector<Vertex> vertices =
@@ -27,20 +29,8 @@ RixtenRoot::~RixtenRoot() {
 bool RixtenRoot::Init() {
 
     // Logger
-    //logger.logLevel = LogLevel::DEBUG;
     //Logger::g_logState.logLevel = LogLevel::INFO;
     Logger::Init(Logger::g_LogOutput, "RIXTEN_LOG.txt");
-
-    //LOG_FATAL("fatal");
-    //LOG_ERROR("error");
-    LOG_WARN("warn");
-    LOG_INFO("info");
-    LOG_DEBUG("HELLO FROM DOD LOGGER");
-
-    // Logger
-    //Logger::GetInstance();
-    // Logger::GetInstance().SetOnlyOneType(TypeMessage::ERROR);
-    //Logger::GetInstance().SetLoggerLayer(TypeMessage::ERROR);
  
     LOG_INFO("=== Rixten start Init ===");
     // Asset manager
@@ -121,10 +111,9 @@ void RixtenRoot::RunEngine() {
     while (!window->IsOpen()) {
         lua["on_tick"](deltaTime);
         renderer->Render();
-        
+
         //Logger::WriteAll();
     }
-
 }
 
 IWindow* RixtenRoot::GetWindow() {return window;}
